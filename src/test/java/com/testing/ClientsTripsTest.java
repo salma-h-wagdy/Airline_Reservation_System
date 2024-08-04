@@ -1,13 +1,9 @@
 package com.testing;
 
-//package tests;
-
 import static org.junit.Assert.assertEquals;
-//import static org.junit.jupiter.api.Assertions.*;
 import org.junit.Test;
 import com.travel.clientstrips.ClientsTrips;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 
 public class ClientsTripsTest {
 
