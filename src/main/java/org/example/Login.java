@@ -2,8 +2,9 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import com.travel.clientstrips.AddNewTrip;
-import com.travel.clientstrips.SearchTrip;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Login extends JFrame {
 	private final JTextField username_field = new JTextField();
@@ -64,8 +65,6 @@ public class Login extends JFrame {
 		login_button.setFont(buttons_font);
 		login_button.addActionListener(e -> handleLogin());
 		buttons_panel.add(login_button);
-                
-                
 
 		JButton clear_button = new JButton("Clear", new ImageIcon("images//clear.png"));
 		clear_button.setFont(buttons_font);
@@ -76,8 +75,8 @@ public class Login extends JFrame {
 		exit_button.setFont(buttons_font);
 		exit_button.addActionListener(e -> System.exit(0));
 		buttons_panel.add(exit_button);
-                
-                JButton Acc_button = new JButton("New Account", new ImageIcon("images//exit.png"));
+
+		JButton Acc_button = new JButton("New Account", new ImageIcon("images//exit.png"));
 		Acc_button.setFont(buttons_font);
 		Acc_button.addActionListener(e -> handleAcc());
 		buttons_panel.add(Acc_button);
@@ -94,29 +93,48 @@ public class Login extends JFrame {
 		String username = username_field.getText();
 		String password = String.valueOf(password_field.getPassword());
 
-		if((username.compareTo("nancy") == 0) && (password.compareTo("123") == 0)|| username.compareTo("salma")==0 && (password.compareTo("456" )==0)) {
+		if (validateUser(username, password)) {
 			setVisible(false);
-			new AddNewTrip();
+			new MainMenu(username); // Assuming MainMenu is another class that you navigate to
 		} else {
 			checkCounter();
 		}
 	}
 
-        private void handleAcc(){
-            JFrame AddWindow = new JFrame("New Account");
-            AddWindow.setSize(400, 300);
-            AddWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	private boolean validateUser(String username, String password) {
+		String filePath = "src/main/java/com/travel/clientstrips/Users.txt";
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] parts = line.split("-");
+				if (parts.length >= 7) { // Ensure there are enough parts in the line
+					String storedName = parts[0];
+					String storedPassword = parts[1];
+					if (storedName.equals(username) && storedPassword.equals(password)) {
+						return true; // Valid user found
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			showMessage("Error reading user data: " + e.getMessage());
+		}
+		return false; // No valid user found
+	}
 
-    // Add components to AddWindow here if necessary
+	private void handleAcc() {
+		JFrame AddWindow = new JFrame("New Account");
+		AddWindow.setSize(400, 300);
+		AddWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		new AddNewAcc(); // Make the window visible
+	}
 
-            new AddNewAcc(); // Make the window visible
-        }
 	private void checkCounter() {
 		count++;
-		JOptionPane.showMessageDialog(this,"Invalid user credentials!!!",null, JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Invalid user credentials!!!", null, JOptionPane.ERROR_MESSAGE);
 		handleClear();
-		if(count == 3) {
-			JOptionPane.showMessageDialog(this,"Maximum attempts reached!", null, JOptionPane.ERROR_MESSAGE);
+		if (count == 3) {
+			JOptionPane.showMessageDialog(this, "Maximum attempts reached!", null, JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
 	}
@@ -131,10 +149,16 @@ public class Login extends JFrame {
 		try {
 			UIManager.setLookAndFeel(looks[1].getClassName());
 			SwingUtilities.updateComponentTreeUI(this);
-		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
-				 IllegalAccessException e) {
+		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
+	private void showMessage(String message) {
+		JOptionPane.showMessageDialog(this, message, null, JOptionPane.WARNING_MESSAGE);
+	}
+
+	public static void main(String[] args) {
+		new Login();
+	}
 }

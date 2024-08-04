@@ -1,108 +1,132 @@
 package com.travel.clientstrips;
-
-//import com.medical.store.supplier.connection.SupplierService;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.List;
-import org.example.Login;
 
 public class AddNewTrip extends JFrame {
     private final JTextField id_field = new JTextField();
     private final JTextField name_field = new JTextField();
     private final JTextField tripId_field = new JTextField();
-    private final JTextField triptype_field = new JTextField();
+    private final JComboBox<String> triptype_combobox; // Changed to JComboBox
     private final JTextField tripdate_field = new JTextField();
     private final JTextField tripduration_field = new JTextField();
-    private final JTextField tripprofit_field = new JTextField();
     private final JTextField No_pass_field = new JTextField();
-    
-    //private final JTextField tripdetail_field = new JTextField();
+
+    // Add a JCheckBox for return flight
+    private final JCheckBox oneWayTripCheckbox = new JCheckBox("One Way Flight");
 
     private final DefaultTableModel model = new DefaultTableModel();
-
-   // public AddNewTrip(String username){};
     private final TripService tripService;
 
-  
-    public AddNewTrip() {
+    public AddNewTrip(String username) {
         super("Add New Trip");
-        setSize(950,700);
+        User user = new User();
+        user=user.validateUser(username);
+        System.out.println("Username in add new trip: " + user.getName());
+        setSize(950, 700);
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(null);
 
-        Font font = new Font("Chilanka", Font.BOLD, 20);
-        Font fields_font = new Font("Chilanka", Font.PLAIN, 18);
+        Font font = new Font("Chilanka", Font.BOLD, 15);
+        Font fields_font = new Font("Chilanka", Font.PLAIN, 13);
         Color background_color = Color.CYAN;
 
         JLabel heading = new JLabel("New Trip Details");
-        heading.setFont(new Font("Chilanka",Font.BOLD,30));
-        heading.setBounds(0,5,getWidth(),40);
+        heading.setFont(new Font("Chilanka", Font.BOLD, 30));
+        heading.setBounds(0, 5, getWidth(), 40);
         heading.setHorizontalAlignment(JLabel.CENTER);
         heading.setVerticalAlignment(JLabel.CENTER);
         heading.setForeground(Color.blue);
         add(heading);
-//        
-//         JLabel l0 = new JLabel("Name:");
-//        l0.setFont(font);
-//        l0.setBounds(200, 55, 200, 35);
-//        add(l0);
-//
-//        id_field.setBounds(420, 55, 300, 35);
-//        id_field.setToolTipText("Enter your name");
-//        id_field.setFont(fields_font);
-//        add(name_field);
-        
-        JLabel l1 = new JLabel("Passport number:");
+
+        JLabel l1 = new JLabel("Passport Number:");
         l1.setFont(font);
-        l1.setBounds(200, 55, 200, 35);
+        l1.setBounds(200, 55, 200, 25);
         add(l1);
 
-        id_field.setBounds(420, 55, 300, 35);
-        id_field.setToolTipText("Enter passport number");
+        id_field.setBounds(420, 55, 300, 25);
+        id_field.setToolTipText("Passport number (display only)");
         id_field.setFont(fields_font);
+        id_field.setText(String.valueOf(user.getId()));
+        id_field.setEditable(false); // Make field non-editable
         add(id_field);
-        
-        
+
+        JLabel l7 = new JLabel("Name:");
+        l7.setFont(font);
+        l7.setBounds(200, 80, 200, 25);
+        add(l7);
+
+        name_field.setBounds(420, 80, 300, 25);
+        name_field.setToolTipText("Name (display only)");
+        name_field.setFont(fields_font);
+        name_field.setText(user.getName());
+        name_field.setEditable(false); // Make field non-editable
+        add(name_field);
 
         JLabel l2 = new JLabel("Flight Id:");
         l2.setFont(font);
-        l2.setBounds(200, 110, 200, 35);
+        l2.setBounds(200, 105, 200, 25);
         add(l2);
 
-        tripId_field.setBounds(420, 110, 300, 35);
+        tripId_field.setBounds(420, 105, 300, 25);
         tripId_field.setToolTipText("Enter Flight ID");
         tripId_field.setFont(fields_font);
         add(tripId_field);
 
         JLabel l3 = new JLabel("Flight Type:");
         l3.setFont(font);
-        l3.setBounds(200,165,200,35);
+        l3.setBounds(200, 135, 200, 25);
         add(l3);
 
-        triptype_field.setBounds(420, 165, 300, 35);
-        triptype_field.setToolTipText("Enter Flight Type");
-        triptype_field.setFont(fields_font);
-        add(triptype_field);
+        // Initialize JComboBox with flight type options
+        String[] flightTypes = {"Economy", "Business", "First Class"};
+        triptype_combobox = new JComboBox<>(flightTypes);
+        triptype_combobox.setBounds(420, 135, 300, 25);
+        triptype_combobox.setFont(fields_font);
+        add(triptype_combobox);
 
         JLabel l4 = new JLabel("Flight Date:");
         l4.setFont(font);
-        l4.setBounds(200,220,200,35);
+        l4.setBounds(200, 165, 200, 25);
         add(l4);
 
-        tripdate_field.setBounds(420,220,300,35);
+        tripdate_field.setBounds(420, 165, 300, 25);
         tripdate_field.setToolTipText("Enter Flight Date");
         tripdate_field.setFont(fields_font);
         add(tripdate_field);
 
-        JLabel l5 = new JLabel("Passengers' Number");
+        oneWayTripCheckbox.setFont(font);
+        oneWayTripCheckbox.setBounds(420, 195, 300, 25);
+        oneWayTripCheckbox.setBackground(background_color);
+        add(oneWayTripCheckbox);
+
+        // Add ItemListener to JCheckBox to enable/disable duration field
+        oneWayTripCheckbox.addItemListener(e -> {
+            if (oneWayTripCheckbox.isSelected()) {
+                tripduration_field.setEnabled(false); // Disable duration field for return flights
+                tripduration_field.setText(""); // Clear the duration field
+            } else {
+                tripduration_field.setEnabled(true); // Enable duration field for other flight types
+            }
+        });
+
+        JLabel l6 = new JLabel("Duration in days:");
+        l6.setFont(font);
+        l6.setBounds(200, 225, 200, 25);
+        add(l6);
+
+        tripduration_field.setBounds(420, 225, 300, 25);
+        tripduration_field.setToolTipText("Enter number of days");
+        tripduration_field.setFont(fields_font);
+        add(tripduration_field);
+
+        JLabel l5 = new JLabel("Passengers' Number:");
         l5.setFont(font);
-        l5.setBounds(200,275,200,35);
+        l5.setBounds(200, 255, 200, 25);
         add(l5);
 
-        No_pass_field.setBounds(420,275,300,35);
+        No_pass_field.setBounds(420, 255, 300, 25);
         No_pass_field.setToolTipText("Enter number of passengers");
         No_pass_field.setFont(fields_font);
         add(No_pass_field);
@@ -113,46 +137,32 @@ public class AddNewTrip extends JFrame {
 
         JButton save_button = new JButton("Save", new ImageIcon("src//images//save.png"));
         save_button.setFont(fields_font);
-        save_button.setToolTipText("click to save supplier details");
+        save_button.setToolTipText("Click to save trip details");
         save_button.addActionListener(e -> handleSave());
         buttons_panel.add(save_button);
 
-//        JButton clear_button = new JButton("Clear", new ImageIcon("src//images//clear.png"));
-//        clear_button.setFont(fields_font);
-//        clear_button.setToolTipText("click to clear all text fields");
-//        clear_button.addActionListener(e -> clearFields());
-//        buttons_panel.add(clear_button);
-
-        JButton all_button = new JButton("All", new ImageIcon("src//images//all.png"));
-        all_button.setFont(fields_font);
-        all_button.setToolTipText("click to view all trips details");
-        all_button.addActionListener(e -> handleAll());
-        buttons_panel.add(all_button);
-        
         JButton search_button = new JButton("Search", new ImageIcon("src//images//search.png"));
         search_button.setFont(fields_font);
-        search_button.setToolTipText("click to view all trips details");
-        search_button.addActionListener(e -> handlesearch());
+        search_button.setToolTipText("Click to search trips");
+        search_button.addActionListener(e -> handleSearch());
         buttons_panel.add(search_button);
 
         add(buttons_panel);
 
         JTable tabGrid = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(tabGrid);
-        scrollPane.setBounds(0,380, getWidth(), getHeight() - 420);
+        scrollPane.setBounds(0, 380, getWidth(), getHeight() - 420);
         add(scrollPane);
-        tabGrid.setFont(new Font ("Chilanka", Font.PLAIN,16));
+        tabGrid.setFont(new Font("Chilanka", Font.PLAIN, 16));
 
-                model.addColumn("Passport Number");
-                model.addColumn("Name");
-		model.addColumn("Flight ID");
-                model.addColumn("Flight Type");
-                model.addColumn("Flight Date");
-                model.addColumn("Price per Ticket");
-                model.addColumn("Trip Duration");
-                model.addColumn("Total cost");
-		model.addColumn("Number Of Passengers");
-		//model.addColumn("Details");
+        model.addColumn("Passport Number");
+        model.addColumn("Name");
+        model.addColumn("Flight ID");
+        model.addColumn("Flight Type");
+        model.addColumn("Flight Date");
+        model.addColumn("Trip Duration in days");
+        model.addColumn("Total Cost $");
+        model.addColumn("Number Of Passengers");
 
         getContentPane().setBackground(background_color);
         tripService = new TripService();
@@ -160,53 +170,81 @@ public class AddNewTrip extends JFrame {
     }
 
     private void handleSave() {
+        // Get data from input fields
         String id_str = id_field.getText();
         String name = name_field.getText();
         String tripid = tripId_field.getText();
-        String triptype = triptype_field.getText();
+        String triptype = (String) triptype_combobox.getSelectedItem();
         String tripdate = tripdate_field.getText();
-        String trippriceStr = tripprofit_field.getText();
         String tripduration = tripduration_field.getText();
-        String tripprofitStr = tripprofit_field.getText();
         String No_passStr = No_pass_field.getText();
-        
-            int tripprice = Integer.parseInt(trippriceStr);
-            int profit = Integer.parseInt(tripprofitStr);
-            int No_pass = Integer.parseInt(No_passStr);
-        //String tripdetail = tripdetail_field.getText();
-        tripService.addNewTrip(id_str,name,tripid ,triptype, tripdate,tripprice,tripduration,profit,No_pass);
-        
+
+        // Parse necessary data
+        int id = Integer.parseInt(id_str);
+        int numPassengers = Integer.parseInt(No_passStr);
+        int totalProfit = calculateFare(numPassengers, triptype);
+
+        // Create a User object
+        User user = new User(id, name, 0, "", "", "", ""); // Adjust User constructor as needed
+
+        // Determine if it's a one-way flight
+        if (oneWayTripCheckbox.isSelected()) {
+            tripduration = "0"; // For one way flight, set duration to 0
+        }
+
+        // Create a ClientsTrips object using the User
+        ClientsTrips trip = new ClientsTrips(user, tripid, triptype, tripdate, totalProfit, tripduration, totalProfit, numPassengers);
+
+        // Save the trip and update the table
+        tripService.addNewTrip(id_str, name, tripid, triptype, tripdate, tripduration, totalProfit, numPassengers);
+        model.addRow(new Object[]{id_str, name, tripid, triptype, tripdate, tripduration, totalProfit, numPassengers});
         clearFields();
     }
-    
-    private void handlesearch(){
+
+    private void handleSearch() {
         JFrame searchWindow = new JFrame("Search Trip");
-    searchWindow.setSize(400, 300); // Adjust size as needed
-    searchWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only the search window
+        searchWindow.setSize(400, 300); // Adjust size as needed
+        searchWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only the search window
 
-    // Add search components to the searchWindow (e.g., text fields, labels, buttons)
-
-     new SearchTrip();
+       // new SearchTrip();
     }
 
     private void clearFields() {
         No_pass_field.setText("");
         tripId_field.setText("");
-        triptype_field.setText("");
         tripdate_field.setText("");
-       // passnumber_field.setText("");
+        tripduration_field.setText("");
+        No_pass_field.setText("");
+        triptype_combobox.setSelectedIndex(0); // Reset to default option
+        oneWayTripCheckbox.setSelected(false); // Reset the checkbox
     }
 
-    private void handleAll() {
-        int row = 0;
-        List<Trip> trips = tripService.getTrips();
-        for (Trip trip: trips) {
-            model.insertRow(row++, new Object[] {trip.getId(),trip.getClientName(),trip.getTripid(),  trip.getTripType(), trip.getTripDate(),trip.getPrice(), trip.getDuration(),trip.getProfit(),trip.getNo_pass()});
-        }//trip.getAge(),,trip.getDetails()
+    private int calculateFare(int numPassengers, String flightType) {
+        final int ECONOMY_PRICE = 500;
+        final int BUSINESS_PRICE = 1000;
+        final int FIRST_CLASS_PRICE = 2000;
+
+        int pricePerTicket = 0;
+
+        switch (flightType.toLowerCase()) {
+            case "economy":
+                pricePerTicket = ECONOMY_PRICE;
+                break;
+            case "business":
+                pricePerTicket = BUSINESS_PRICE;
+                break;
+            case "first class":
+                pricePerTicket = FIRST_CLASS_PRICE;
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Invalid flight type");
+                return 0;
+        }
+
+        return pricePerTicket * numPassengers;
     }
 
     public static void main(String[] args) {
-        new AddNewTrip();
-    }
 
+    }
 }

@@ -44,7 +44,7 @@ public class About extends JFrame {
 
 			JLabel l6 = new JLabel("Menna Ayman Alsaid Geba");
 		l6.setFont(new Font("Times New Roman",Font.BOLD,30));
-		l6.setBounds(500,250,400,40);
+		l6.setBounds(500,300,400,40);
 		l6.setForeground(Color.red);
 		this.add(l6);
                 

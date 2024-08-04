@@ -2,55 +2,55 @@ package com.testing;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import com.travel.clientstrips.ClientsTrips;
+import com.travel.UserTrips.UserTrips;
 import org.junit.Before;
 import org.junit.After;
 
-public class ClientsTripsTest {
+public class UserTripsTest {
 
-    private ClientsTrips clientsTrips;
+    private UserTrips UserTrips;
 
     @Before
     public void setUp() {
         System.out.println("Test setup");
-        clientsTrips = new ClientsTrips(123, "Farah Hany", "T123", "Leisure", "2024-08-01", 1000, "7 days", 200, 5);
+        UserTrips = new UserTrips(123, "Farah Hany", "T123", "Leisure", "2024-08-01", 1000, "7 days", 200, 5);
     }
 
     @Test
     public void testConstructor() {
-        assertEquals(123, clientsTrips.getId());
-        assertEquals("Farah Hany", clientsTrips.getClientname());
-        assertEquals("T123", clientsTrips.getTripid());
-        assertEquals("Leisure", clientsTrips.getTriptype());
-        assertEquals("2024-08-01", clientsTrips.getTripdate());
-        assertEquals("7 days", clientsTrips.getDuration());
-        assertEquals(200, clientsTrips.getPrice());
-        assertEquals(1000, clientsTrips.getProfit());
-        assertEquals(5, clientsTrips.getNo_pass());
+        assertEquals(123, UserTrips.getId());
+        assertEquals("Farah Hany", UserTrips.getUsername());
+        assertEquals("T123", UserTrips.getTripid());
+        assertEquals("Leisure", UserTrips.getTriptype());
+        assertEquals("2024-08-01", UserTrips.getTripdate());
+        assertEquals("7 days", UserTrips.getDuration());
+        assertEquals(200, UserTrips.getPrice());
+        assertEquals(1000, UserTrips.getProfit());
+        assertEquals(5, UserTrips.getNo_pass());
     }
 
     @Test
     public void testSettersAndGetters() {
 
-        clientsTrips.setId(456);
-        clientsTrips.setClientname("Rawan Mohamed");
-        clientsTrips.setTripid("T456");
-        clientsTrips.setTriptype("Business");
-        clientsTrips.setTripdate("2024-08-02");
-        clientsTrips.setDuration("3 days");
-        clientsTrips.setPrice(300);
-        clientsTrips.setProfit(900);
-        clientsTrips.setNo_pass(3);
+        UserTrips.setId(456);
+        UserTrips.setClientname("Rawan Mohamed");
+        UserTrips.setTripid("T456");
+        UserTrips.setTriptype("Business");
+        UserTrips.setTripdate("2024-08-02");
+        UserTrips.setDuration("3 days");
+        UserTrips.setPrice(300);
+        UserTrips.setProfit(900);
+        UserTrips.setNo_pass(3);
 
-        assertEquals(456, clientsTrips.getId());
-        assertEquals("Rawan Mohamed", clientsTrips.getClientname());
-        assertEquals("T456", clientsTrips.getTripid());
-        assertEquals("Business", clientsTrips.getTriptype());
-        assertEquals("2024-08-02", clientsTrips.getTripdate());
-        assertEquals("3 days", clientsTrips.getDuration());
-        assertEquals(300, clientsTrips.getPrice());
-        assertEquals(900, clientsTrips.getProfit());
-        assertEquals(3, clientsTrips.getNo_pass());
+        assertEquals(456, UserTrips.getId());
+        assertEquals("Rawan Mohamed", UserTrips.getClientname());
+        assertEquals("T456", UserTrips.getTripid());
+        assertEquals("Business", UserTrips.getTriptype());
+        assertEquals("2024-08-02", UserTrips.getTripdate());
+        assertEquals("3 days", UserTrips.getDuration());
+        assertEquals(300, UserTrips.getPrice());
+        assertEquals(900, UserTrips.getProfit());
+        assertEquals(3, UserTrips.getNo_pass());
     }
 
 
@@ -67,10 +67,10 @@ public class ClientsTripsTest {
                 "Category='T123', " +
                 "Category='5'}";
 
-        assertEquals(expected, clientsTrips.toString());
+        assertEquals(expected, UserTrips.toString());
     }
     @After
     public void tearDown () {
-        clientsTrips = null;
+        UserTrips = null;
     }
 }

@@ -8,40 +8,81 @@ import java.util.Scanner;
  *
  * @author Hp
  */
-public class CalculateFare {
-     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        // Constants for flight types and prices
-        final int ECONOMY_PRICE = 500;
-        final int BUSINESS_PRICE = 1000;
-        final int FIRST_CLASS_PRICE = 2000;
-
-        System.out.print("Enter flight type (economy, business, first class): ");
-        String flightType = scanner.nextLine().toLowerCase();
-
-        System.out.print("Enter number of passengers: ");
-        int numPassengers = scanner.nextInt();
-
-        int totalFare = 0;
-
-        switch (flightType) {
-            case "economy":
-                totalFare = ECONOMY_PRICE * numPassengers;
-                break;
-            case "business":
-                totalFare = BUSINESS_PRICE * numPassengers;
-                break;
-            case "first class":
-                totalFare = FIRST_CLASS_PRICE * numPassengers;
-                break;
-            default:
-                System.out.println("Invalid flight type.");
-                return;
-        }
-
-        System.out.println("Total fare: $" + totalFare);
-    }
-    
-    
+public class CalculateFare  {
+//    private JTextField flightTypeField, numPassengersField, totalFareField;
+//
+//    public CalculateFare() {
+//        setTitle("Fare Calculator");
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setSize(300, 200);
+//        setLayout(new GridLayout(4, 2));
+//
+//        JLabel flightTypeLabel = new JLabel("Flight Type:");
+//        flightTypeField = new JTextField();
+//        JLabel numPassengersLabel = new JLabel("Number of Passengers:");
+//        numPassengersField = new JTextField();
+//        JLabel totalFareLabel = new JLabel("Total Fare:");
+//        totalFareField = new JTextField();
+//        totalFareField.setEditable(false); // Make it non-editable
+//
+//        JButton calculateButton = new JButton("Calculate");
+//        calculateButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent  
+// e) {
+//                calculateFare();  
+//
+//            }
+//        });
+//
+//        add(flightTypeLabel);
+//        add(flightTypeField);
+//        add(numPassengersLabel);
+//        add(numPassengersField);
+//        add(totalFareLabel);
+//        add(totalFareField);
+//        add(new JLabel()); // Empty label for spacing
+//        add(calculateButton);
+//
+//        setVisible(true);
+//    }
+//
+//    private void calculateFare() {
+//        final int ECONOMY_PRICE = 500;
+//        final int BUSINESS_PRICE = 1000;
+//        final int FIRST_CLASS_PRICE = 2000;
+//
+//        String flightType = flightTypeField.getText().toLowerCase();
+//        int numPassengers;
+//
+//        try {
+//            numPassengers = Integer.parseInt(numPassengersField.getText());
+//        } catch (NumberFormatException e) {
+//            JOptionPane.showMessageDialog(this, "Invalid number of passengers");
+//            return;
+//        }
+//
+//        int totalFare = 0;
+//
+//        switch (flightType) {
+//            case "economy":
+//                totalFare = ECONOMY_PRICE * numPassengers;
+//                break;
+//            case "business":
+//                totalFare = BUSINESS_PRICE * numPassengers;
+//                break;
+//            case "first class":
+//                totalFare = FIRST_CLASS_PRICE * numPassengers;
+//                break;
+//            default:
+//                JOptionPane.showMessageDialog(this, "Invalid flight type");
+//                return;
+//        }
+//
+//        totalFareField.setText("$" + totalFare);
+//    }
+//
+//    public static void main(String[] args) {
+//        new CalculateFare();
+//    }
 }

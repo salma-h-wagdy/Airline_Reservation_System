@@ -4,6 +4,8 @@ package org.example;
 
 import com.travel.clientstrips.AddNewTrip;
 
+import java.awt.event.ActionListener;
+
 import com.travel.clientstrips.SearchTrip;
 import com.travel.clientstrips.UpdateTrip;
 import javax.swing.*;
@@ -15,8 +17,9 @@ public class MainMenu extends JFrame {
 	int width = screen.width - 50;
 	int height = screen.height - 50;
 
-	public MainMenu() {
+	public MainMenu(String username) {
 		super("Main Menu");
+		System.out.println("usernamein main menu is:"+username);
 		setSize(900, 700);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -30,14 +33,14 @@ public class MainMenu extends JFrame {
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-                
-                 // Assuming you have a JPanel named contentPane to hold the buttons
-    JPanel contentPane = new JPanel(new FlowLayout()); // Or any desired layout
 
-    // Create buttons
-    JButton btnAddNewClientTrip = new JButton("Add New Trip", new ImageIcon("src//images//add.png"));
-    JButton btnSearchClientTrip = new JButton("Search Trip", new ImageIcon("src//images//search.png"));
- //   JButton btnListOfClientTrips = new JButton("List of all Trips", new ImageIcon("src//images//all.png"));
+		// Assuming you have a JPanel named contentPane to hold the buttons
+		JPanel contentPane = new JPanel(new FlowLayout()); // Or any desired layout
+
+		// Create buttons
+		JButton btnAddNewClientTrip = new JButton("Add New Trip", new ImageIcon("src//images//add.png"));
+		JButton btnSearchClientTrip = new JButton("Search Trip", new ImageIcon("src//images//search.png"));
+		//   JButton btnListOfClientTrips = new JButton("List of all Trips", new ImageIcon("src//images//all.png"));
 		JMenu supplier_menu = new JMenu("Clients Trips");
 //		menuBar.add(supplier_menu);
 //		JMenuItem m1_1 = new JMenuItem("Add New Client Trip", new ImageIcon("src//images//add.png"));
@@ -80,12 +83,12 @@ public class MainMenu extends JFrame {
 		menuBar.add(exit_menu);
 		JMenuItem m5_1 = new JMenuItem("Exit", new ImageIcon("images//exit.png"));
 		exit_menu.add(m5_1);
-//                btnAddNewClientTrip.addActionListener(e -> new AddNewTrip());
-                btnSearchClientTrip.addActionListener(e -> new SearchTrip());
-               // btnPostponeClientTrip.addActionListener(e -> new UpdateTrip());
-               // btnDeleteClientTrip.addActionListener(e -> new DeleteTrip());
-           //     btnListOfClientTrips.addActionListener(e -> new TripList());
-           //  m1_1.addActionListener(e -> new AddNewTrip());
+		btnAddNewClientTrip.addActionListener(e -> new AddNewTrip(username));
+		btnSearchClientTrip.addActionListener(e -> new SearchTrip());
+		// btnPostponeClientTrip.addActionListener(e -> new UpdateTrip());
+		// btnDeleteClientTrip.addActionListener(e -> new DeleteTrip());
+		//     btnListOfClientTrips.addActionListener(e -> new TripList());
+		//  m1_1.addActionListener(e -> new AddNewTrip());
 //		m1_2.addActionListener(e -> new SearchTrip());
 //		m1_3.addActionListener(e -> new UpdateTrip());
 //		m1_4.addActionListener(e -> new DeleteTrip());
@@ -94,21 +97,21 @@ public class MainMenu extends JFrame {
 //		m2_2.addActionListener(e -> new com.travel.guides.SearchTourGuide());
 //		m2_3.addActionListener(e -> new com.travel.guides.AssignTourGuide());
 		//m2_4.addActionListener(e -> new DeleteMedicine());
-                //m2_5.addActionListener(e -> new MedicineList());
+		//m2_5.addActionListener(e -> new MedicineList());
 		//m3_1.addActionListener(e -> new DailyPurchaseReport());
 		//m3_2.addActionListener(e -> new com.travel.clientstrips.TripProfit());
 		m4_1.addActionListener(e -> new About());
 		m5_1.addActionListener(e -> System.exit(0));
-                contentPane.add(btnAddNewClientTrip);
-                contentPane.add(btnSearchClientTrip);
-               
-           //     contentPane.add(btnListOfClientTrips);
+		contentPane.add(btnAddNewClientTrip);
+		contentPane.add(btnSearchClientTrip);
+
+		//     contentPane.add(btnListOfClientTrips);
 		setVisible(true);
-                getContentPane().add(contentPane);
-                
+		getContentPane().add(contentPane);
+
 	}
 
-	public static void main(String[] args) {
-		new MainMenu();
+	public static void main(String[] args, String username) {
+		new MainMenu(username);
 	}
 }

@@ -1,4 +1,5 @@
 package com.travel.clientstrips;
+
 import java.util.Objects;
 
 public class ClientsTrips {
@@ -17,16 +18,15 @@ public class ClientsTrips {
     public ClientsTrips() {
     }
 
-    public ClientsTrips(int pass,String clientname,  String tripid,String triptype,String tripdate,int totalcost  , String duration, int price, int No_pass) {
-       this.pass = pass;
-        this.clientname = clientname;
-        //this.age = age;
+
+    public ClientsTrips(User user, String tripid, String triptype, String tripdate, int totalcost, String duration, int price, int No_pass) {
+        this.pass = user.getId();
+        this.clientname = user.getName();
         this.triptype = triptype;
         this.tripdate = tripdate;
         this.duration = duration;
         this.priceperticket = price;
         this.totalcost = totalcost;
-        //this.details = details;
         this.tripid = tripid;
         this.No_pass = No_pass;
     }
@@ -47,9 +47,9 @@ public class ClientsTrips {
         return clientname;
     }
 
-//    public String getAge() {
-//        return age;
-//    }
+    //    public String getAge() {
+    //        return age;
+    //    }
 
     public String getTripid() {
         return tripid;
@@ -75,9 +75,9 @@ public class ClientsTrips {
         return totalcost;
     }
 
-//    public String getDetails() {
-//        return details;
-//    }
+    //    public String getDetails() {
+    //        return details;
+    //    }
 
     public void setId(int pass) {
         this.pass = pass;
@@ -87,9 +87,9 @@ public class ClientsTrips {
         this.clientname = clientname;
     }
 
-//    public void setAge(String age) {
-//        this.age = age;
-//    }
+    //    public void setAge(String age) {
+    //        this.age = age;
+    //    }
 
     public void setTripid(String tripid) {
         this.tripid = tripid;
@@ -115,25 +115,23 @@ public class ClientsTrips {
         this.totalcost = profit;
     }
 
-//    public void setDetails(String details) {
-//        this.details = details;
-//    }
+    //    public void setDetails(String details) {
+    //        this.details = details;
+    //    }
 
-    
-    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientsTrips trip = (ClientsTrips) o;
-        return Objects.equals(pass, trip.pass)&& Objects.equals(clientname, trip.clientname) && Objects.equals(triptype, trip.triptype) && Objects.equals(tripdate, trip.tripdate) && Objects.equals(duration, trip.duration) && Objects.equals(priceperticket, trip.priceperticket)&& Objects.equals(totalcost, trip.totalcost)&& Objects.equals(No_pass, trip.No_pass);
+        return Objects.equals(pass, trip.pass) && Objects.equals(clientname, trip.clientname) && Objects.equals(triptype, trip.triptype) && Objects.equals(tripdate, trip.tripdate) && Objects.equals(duration, trip.duration) && Objects.equals(priceperticket, trip.priceperticket) && Objects.equals(totalcost, trip.totalcost) && Objects.equals(No_pass, trip.No_pass);
         //&& Objects.equals(details, trip.details)
-    } 
+    }
     //&& Objects.equals(age, trip.age)
 
     @Override
     public int hashCode() {
-        return Objects.hash(pass,clientname,triptype, tripdate, duration, priceperticket,totalcost, tripid,No_pass);
+        return Objects.hash(pass, clientname, triptype, tripdate, duration, priceperticket, totalcost, tripid, No_pass);
     }
     //,clientname , age , profit, details
 
@@ -141,17 +139,17 @@ public class ClientsTrips {
     public String toString() {
         return "Trip{" +
                 "id='" + pass + '\'' +
-                 ", Category='" + clientname + '\'' +
+                ", Category='" + clientname + '\'' +
                 ", Category='" + triptype + '\'' +
                 ", Trip Date='" + tripdate + '\'' +
                 ", Duration='" + duration + '\'' +
                 ", Price='" + priceperticket + '\'' +
-                  ", profit='" + totalcost + '\'' +
-                 ", Category='" + tripid + '\'' +
+                ", profit='" + totalcost + '\'' +
+                ", Category='" + tripid + '\'' +
                 ", Category='" + No_pass + '\'' +
-                
-                 // ", details='" + details + '\'' +
-                 
+
+                // ", details='" + details + '\'' +
+
                 '}';
     }
 }

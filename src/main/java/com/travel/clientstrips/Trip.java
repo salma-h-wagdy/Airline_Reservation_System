@@ -10,7 +10,7 @@ public class Trip {
     private String triptype;
     private String tripdate;
     private String duration;
-    private int priceperticket;
+    //private int priceperticket;
     private int totalcost;
     private int No_pass;
     //private String details;
@@ -18,14 +18,14 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(int id, String clientname  ,String tripid, String triptype, String tripdate,int price,String duration ,int profit, int No_pass) { //, String age, String details
+    public Trip(int id, String clientname  ,String tripid, String triptype, String tripdate,String duration ,int profit, int No_pass) { //, String age, String details
         this.id = id;
         this.clientname = clientname;
         //this.age = age;
         this.triptype = triptype;
         this.tripdate = tripdate;
         this.duration = duration;
-        this.priceperticket = price;
+        //this.priceperticket = price;
         this.totalcost = profit;
         this.tripid = tripid;
         this.No_pass = No_pass;
@@ -63,7 +63,7 @@ public class Trip {
     public void setClientName(String clientname) {
         this.clientname = clientname;
     }
-    
+
     public String getTripType() {
         return triptype;
     }
@@ -75,8 +75,8 @@ public class Trip {
 //    public void seAge(String age) {
 //        this.age = age;
 //    }
-//    
-    
+//
+
     public void setTripType(String triptype) {
         this.triptype = triptype;
     }
@@ -97,16 +97,16 @@ public class Trip {
         this.duration = duration;
     }
 
-    public int getPrice() {
-        return priceperticket;
-    }
+//    public int getPrice() {
+//        return priceperticket;
+//    }
+//
+//    public void setPrice(int price) {
+//        this.priceperticket = price;
+//    }
 
-    public void setPrice(int price) {
-        this.priceperticket = price;
-    }
 
- 
-       public int getProfit() {
+    public int getProfit() {
         return totalcost;
     }
 
@@ -114,7 +114,7 @@ public class Trip {
         this.totalcost = profit;
     }
 
-    
+
 //       public String getDetails() {
 //        return details;
 //    }
@@ -123,18 +123,18 @@ public class Trip {
 //        this.details = details;
 //    }
 
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Trip trip = (Trip) o;
-        return Objects.equals(id, trip.id) && Objects.equals(clientname, trip.clientname)&& Objects.equals(triptype, trip.triptype) && Objects.equals(tripdate, trip.tripdate) && Objects.equals(duration, trip.duration) && Objects.equals(priceperticket, trip.priceperticket)&& Objects.equals(totalcost, trip.totalcost)&& Objects.equals(No_pass, trip.No_pass);
+        return Objects.equals(id, trip.id) && Objects.equals(clientname, trip.clientname)&& Objects.equals(triptype, trip.triptype) && Objects.equals(tripdate, trip.tripdate) && Objects.equals(duration, trip.duration) && Objects.equals(totalcost, trip.totalcost)&& Objects.equals(No_pass, trip.No_pass);//&& Objects.equals(priceperticket, trip.priceperticket)
     }//&& Objects.equals(age, trip.age)&& Objects.equals(details, trip.details)
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,clientname , triptype, tripdate, duration, priceperticket, totalcost,No_pass);
+        return Objects.hash(id,clientname , triptype, tripdate, duration, totalcost,No_pass);//priceperticket
     }//, age , details
 
     @Override
@@ -143,12 +143,12 @@ public class Trip {
                 "id='" + id + '\'' +
                 ", Category='" + triptype + '\'' +
                 ", Trip Date='" + tripdate + '\'' +
-                ", Dusration='" + duration + '\'' +
-                ", Price='" + priceperticket + '\'' +
-                  ", profit='" + totalcost + '\'' +
-                 ", profit='" + No_pass + '\'' +
-                 // ", details='" + details + '\'' +
-                 
+                ", Duration='" + duration + '\'' +
+                // ", Price='" + priceperticket + '\'' +
+                ", profit='" + totalcost + '\'' +
+                ", passengers='" + No_pass + '\'' +
+                // ", details='" + details + '\'' +
+
                 '}';
     }
 }

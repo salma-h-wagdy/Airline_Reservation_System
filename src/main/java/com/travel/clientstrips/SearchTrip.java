@@ -11,7 +11,7 @@ public class SearchTrip extends JFrame {
 	private final JTextField id_field = new JTextField();
 	private final JTextField name_field = new JTextField();
 	private final JTextField age_field = new JTextField();
-	
+
 
 	private final DefaultTableModel model = new DefaultTableModel();
 
@@ -35,13 +35,13 @@ public class SearchTrip extends JFrame {
 		heading.setForeground(Color.blue);
 		add(heading);
 
-		JLabel l1 = new JLabel("Client id:");
+		JLabel l1 = new JLabel("Client passport:");
 		l1.setBounds(200,110,200,30);
 		l1.setFont(font);
 		add(l1);
 
 		id_field.setBounds(420,110,300,30);
-		id_field.setToolTipText("Enter Client Id");
+		id_field.setToolTipText("Enter Client passport number");
 		id_field.setFont(fields_font);
 		add(id_field);
 
@@ -87,7 +87,7 @@ public class SearchTrip extends JFrame {
 
 		JPanel buttons_panel = new JPanel();
 		buttons_panel.setBounds(0, 360, getWidth(), 40);
-		buttons_panel.setBackground(background_color); 
+		buttons_panel.setBackground(background_color);
 
 		JButton search_button = new JButton("Search", new ImageIcon("images//search.png"));
 		search_button.setBounds(150,330,110,35);
@@ -102,44 +102,44 @@ public class SearchTrip extends JFrame {
 		clear_button.addActionListener(e -> handleClear());
 		buttons_panel.add(clear_button);
 
-                
-              
-                                
-		JButton all_button = new JButton("All", new ImageIcon("images//all.png"));
-		all_button.setToolTipText("click to view all Trip details");
-		all_button.setFont(fields_font);
-		all_button.addActionListener(e -> handleAll());
-		buttons_panel.add(all_button);
 
+
+//
+//		JButton all_button = new JButton("All", new ImageIcon("images//all.png"));
+//		all_button.setToolTipText("click to view all Trip details");
+//		all_button.setFont(fields_font);
+//		all_button.addActionListener(e -> handleAll());
+//		buttons_panel.add(all_button);
+//
 		add(buttons_panel);
 
-		JTable tabGrid = new JTable(model);                
+		JTable tabGrid = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(tabGrid);
 		scrollPane.setBounds(0, 405, getWidth(), getHeight() - 440);
 		add(scrollPane);
 		tabGrid.setFont(new Font ("Chilanka", Font.PLAIN,16));
-                model.addColumn("Trip ID");
+		model.addColumn("Trip ID");
 		model.addColumn("Trip Type");
 		model.addColumn("Date");
 		model.addColumn("Price");
-                model.addColumn("Duration");
+		model.addColumn("Duration in days");
 //		model.addColumn("Profit");
 //		model.addColumn("Details");
 
-                JButton update_button = new JButton("Postpone", new ImageIcon("src//images//update.png"));
+		JButton update_button = new JButton("Postpone", new ImageIcon("src//images//update.png"));
 		update_button.setFont(fields_font);
 		update_button.setToolTipText("click to update supplier details");
 		update_button.addActionListener(e -> handleUpdate(tabGrid));
 		buttons_panel.add(update_button);
 
-                
-                JButton delete_button = new JButton("Delete", new ImageIcon("images//delete.png"));
-                delete_button.setToolTipText("click to delete supplier details");
-                delete_button.setFont(fields_font);
-                delete_button.addActionListener(e -> handleDelete(tabGrid));
-                buttons_panel.add(delete_button);
-                
-                
+
+		JButton delete_button = new JButton("Delete", new ImageIcon("images//delete.png"));
+		delete_button.setToolTipText("click to delete supplier details");
+		delete_button.setFont(fields_font);
+		delete_button.addActionListener(e -> handleDelete(tabGrid));
+		buttons_panel.add(delete_button);
+
+
 		getContentPane().setBackground(background_color);
 		tripService = new TripService();
 		setVisible(true);
@@ -148,19 +148,22 @@ public class SearchTrip extends JFrame {
 	private void handleSearch() {
 		String id = id_field.getText();
 		if (id.isBlank()) {
-			showMessage("Please enter Client id!");
+			showMessage("Please enter Client passport number!");
 		} else {
-                    int row = 0;
-                    model.setRowCount(0);
+			int row = 0;
+			model.setRowCount(0);
 			List<ClientsTrips> trips = tripService.getTrips(Integer.parseInt(id));
-                         
-                  for (ClientsTrips trip: trips) {                       
-			model.insertRow(row++, new Object[] {trip.getTripid(),trip.getTriptype(), trip.getTripdate(), trip.getPrice(), trip.getDuration()});
-                        //, trip.getProfit(), trip.getDetails()
-                        id_field.setText(String.valueOf(trip.getId()));
+			if (trips.isEmpty()) {
+				showMessage("No trips found for the given client passport number");
+			} else {
+				for (ClientsTrips trip: trips) {
+					model.insertRow(row++, new Object[] {trip.getTripid(),trip.getTriptype(), trip.getTripdate(), trip.getPrice(), trip.getDuration()});
+					//, trip.getProfit(), trip.getDetails()
+					id_field.setText(String.valueOf(trip.getId()));
 //			name_field.setText(trip.getClientname());
-//			age_field.setText(trip.getAge());	                                                
-		}			                                                                       
+//			age_field.setText(trip.getAge());
+				}
+			}
 		}
 	}
 
@@ -169,47 +172,47 @@ public class SearchTrip extends JFrame {
 		name_field.setText("");
 		age_field.setText("");
 		model.removeRow(1);
-                model.setRowCount(0);
+		model.setRowCount(0);
 	}
 
 	private void handleAll() {
 		int row = 0;
-                model.setRowCount(0);
+		model.setRowCount(0);
 		List<Trip> trips = tripService.getTrips();
 		for (Trip trip: trips) {
-			model.insertRow(row++, new Object[] {trip.getTripType(), trip.getTripDate(), trip.getPrice(), trip.getDuration(), trip.getProfit()});
+			model.insertRow(row++, new Object[] {trip.getTripType(), trip.getTripDate(), trip.getDuration(), trip.getProfit(),trip.getNo_pass()});//, trip.getPrice()
 		}
 	}
 
-        private void handleUpdate(JTable tabGrid) {
+	private void handleUpdate(JTable tabGrid) {
 		int  selectedRows = tabGrid.getSelectedRow();
-                
-                String tripid = (String) model.getValueAt(selectedRows, 0) ;
-                String triptype = (String) model.getValueAt(selectedRows, 1) ;
-                 new UpdateTrip(id_field.getText() ,name_field.getText() ,  tripid,triptype);
-         //       if (selectedRows.length > 0) {
-         //           for (int i = selectedRows.length - 1; i >= 0; i--) {
-         //                   model.removeRow(selectedRows[i]);
-         //           }
-         //       }                
-	}
-        
-         private void handleDelete(JTable tabGrid) {
-             
-             int [] selectedRows = tabGrid.getSelectedRows();
-                if (selectedRows.length > 0) {
-                    for (int i = selectedRows.length - 1; i >= 0; i--) {
-                            model.removeRow(selectedRows[i]);
-                    }
-                }                
-                 }
 
-        
+		String tripid = (String) model.getValueAt(selectedRows, 0) ;
+		String triptype = (String) model.getValueAt(selectedRows, 1) ;
+		new UpdateTrip(id_field.getText() ,name_field.getText() ,  tripid,triptype);
+		//       if (selectedRows.length > 0) {
+		//           for (int i = selectedRows.length - 1; i >= 0; i--) {
+		//                   model.removeRow(selectedRows[i]);
+		//           }
+		//       }
+	}
+
+	private void handleDelete(JTable tabGrid) {
+
+		int [] selectedRows = tabGrid.getSelectedRows();
+		if (selectedRows.length > 0) {
+			for (int i = selectedRows.length - 1; i >= 0; i--) {
+				model.removeRow(selectedRows[i]);
+			}
+		}
+	}
+
+
 	private void showMessage(String message) {
 		JOptionPane.showMessageDialog(this, message, null, JOptionPane.WARNING_MESSAGE);
 	}
 
 	public static void main(String[] args) {
-	    new SearchTrip();
+		new SearchTrip();
 	}
 }
