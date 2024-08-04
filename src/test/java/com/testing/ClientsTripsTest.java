@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import com.travel.clientstrips.ClientsTrips;
 import org.junit.Before;
+import org.junit.After;
 
 public class ClientsTripsTest {
 
@@ -67,5 +68,9 @@ public class ClientsTripsTest {
                 "Category='5'}";
 
         assertEquals(expected, clientsTrips.toString());
+    }
+    @After
+    public void tearDown () {
+        clientsTrips = null;
     }
 }
