@@ -36,11 +36,17 @@ public class About extends JFrame {
 		l4.setForeground(Color.red);
 		this.add(l4);
                 
-                JLabel l5 = new JLabel("Alaa Yasser");
+                JLabel l5 = new JLabel("Mennatalla Mohamed Samir Abdelatif Ezzelarab");
 		l5.setFont(new Font("Times New Roman",Font.BOLD,30));
 		l5.setBounds(500,250,400,40);
 		l5.setForeground(Color.red);
 		this.add(l5);
+
+			JLabel l6 = new JLabel("Menna Ayman Alsaid Geba");
+		l6.setFont(new Font("Times New Roman",Font.BOLD,30));
+		l6.setBounds(500,250,400,40);
+		l6.setForeground(Color.red);
+		this.add(l6);
                 
                 
 		JLabel phone = new JLabel("Contact US :");
