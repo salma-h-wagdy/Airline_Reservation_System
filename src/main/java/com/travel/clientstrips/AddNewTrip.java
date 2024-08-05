@@ -208,37 +208,18 @@ public class AddNewTrip extends JFrame {
 
 
     private void updateDestinations() {
+        Flights flight= new Flights();
         destination_combobox.removeAllItems();
         String selectedSource = (String) source_combobox.getSelectedItem();
         if (selectedSource != null) {
-            List<String> destinations = readDestinationsFromFile(selectedSource);
+            List<String> destinations = flight.readDestinationsFromFile(selectedSource);
             for (String destination : destinations) {
                 destination_combobox.addItem(destination);
             }
         }
     }
 
-    private List<String> readDestinationsFromFile(String source) {
-        String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
-        List<String> destinations = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("-");
-                if (parts.length >= 5) {
-                    String fileSource = parts[0];
-                    String destination = parts[1];
-                    if (fileSource.equals(source) && !destinations.contains(destination)) {
-                        destinations.add(destination);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return destinations;
-    }
 
     private void updateFlights() {
         model.setRowCount(0); // Clear existing rows
@@ -295,19 +276,22 @@ public class AddNewTrip extends JFrame {
 
         // Parse necessary data
         int numPassengers = Integer.parseInt(No_passStr);
-        int totalProfit = calculateFare(numPassengers, triptype);
+        CalculateFare calculateFare = new CalculateFare();
+        int totalProfit = calculateFare.calculateFare(numPassengers, triptype);
 
+
+        Flights flight= new Flights();
         // Check availability
-        if (checkAvailability(tripid, numPassengers)) {
+        if (flight.checkAvailability(tripid, numPassengers)) {
             // Determine if it's a one-way flight
             if (oneWayTripCheckbox.isSelected()) {
                 tripduration = "0"; // For one-way flight, set duration to 0
             }
 
-            if (checkAvailability(tripid, numPassengers)) {
+            if (flight.checkAvailability(tripid, numPassengers)) {
 
                 saveFlightToFile(tripid, (String) source_combobox.getSelectedItem(), (String) destination_combobox.getSelectedItem(), triptype, arrival, departure, tripduration, totalProfit, username);
-                updateAvailability(tripid, numPassengers);
+                flight.updateAvailability(tripid, numPassengers);
 
             }
             // Add to table
@@ -317,50 +301,7 @@ public class AddNewTrip extends JFrame {
             JOptionPane.showMessageDialog(this, "Not enough available seats for this flight.");
         }
     }
-    private boolean checkAvailability(String tripId, int numPassengers) {
-        String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("-");
-                if (parts.length >= 6) {
-                    String fileId = parts[4];
-                    int availableSeats = Integer.parseInt(parts[5]);
-                    if (fileId.equals(tripId) && availableSeats >= numPassengers) {
-                        return true;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
-    private void updateAvailability(String tripId, int numPassengers) {
-        String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
-        File tempFile = new File(filePath + ".tmp");
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
-             PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("-");
-                if (parts.length >= 6) {
-                    String fileId = parts[4];
-                    int availableSeats = Integer.parseInt(parts[5]);
-                    if (fileId.equals(tripId)) {
-                        availableSeats -= numPassengers;
-                        writer.println(String.join("-", parts[0], parts[1], parts[2], parts[3], fileId, String.valueOf(availableSeats)));
-                    } else {
-                        writer.println(line);
-                    }
-                }
-            }
-            tempFile.renameTo(new File(filePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void saveFlightToFile(String tripid, String source, String destination, String flightType, String departureTime, String arrivalTime, String duration, int totalProfit, String username) {
         String filePath = "src/main/java/com/travel/clientstrips/Trips.csv";
@@ -405,30 +346,7 @@ public class AddNewTrip extends JFrame {
         model.setRowCount(0); // Clear table rows
     }
 
-    private int calculateFare(int numPassengers, String flightType) {
-        final int ECONOMY_PRICE = 500;
-        final int BUSINESS_PRICE = 1000;
-        final int FIRST_CLASS_PRICE = 2000;
 
-        int pricePerTicket = 0;
-
-        switch (flightType.toLowerCase()) {
-            case "economy":
-                pricePerTicket = ECONOMY_PRICE;
-                break;
-            case "business":
-                pricePerTicket = BUSINESS_PRICE;
-                break;
-            case "first class":
-                pricePerTicket = FIRST_CLASS_PRICE;
-                break;
-            default:
-                JOptionPane.showMessageDialog(this, "Invalid flight type");
-                return 0;
-        }
-
-        return pricePerTicket * numPassengers;
-    }
 
     public static void main(String[] args) {
         // Launch the application

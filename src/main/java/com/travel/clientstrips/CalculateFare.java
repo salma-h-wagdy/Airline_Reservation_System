@@ -3,12 +3,44 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.travel.clientstrips;
+import javax.swing.*;
 import java.util.Scanner;
 /**
  *
  * @author Hp
  */
 public class CalculateFare  {
+    final int ECONOMY_PRICE = 500;
+    final int BUSINESS_PRICE = 1000;
+    final int FIRST_CLASS_PRICE = 2000;
+
+    public CalculateFare() {}
+
+    public int calculateFare(int numPassengers, String flightType) {
+
+        int pricePerTicket = 0;
+
+        switch (flightType.toLowerCase()) {
+            case "economy":
+                pricePerTicket = ECONOMY_PRICE;
+                break;
+            case "business":
+                pricePerTicket = BUSINESS_PRICE;
+                break;
+            case "first class":
+                pricePerTicket = FIRST_CLASS_PRICE;
+                break;
+            default:
+               // JOptionPane.showMessageDialog(this, "Invalid flight type");
+                return 0;
+        }
+
+        return pricePerTicket * numPassengers;
+    }
+
+
+
+
 //    private JTextField flightTypeField, numPassengersField, totalFareField;
 //
 //    public CalculateFare() {
