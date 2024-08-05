@@ -6,6 +6,9 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Color;
+import java.awt.Font;
+
 
 public class AddNewTrip extends JFrame {
     private final JTextField id_field = new JTextField();
@@ -27,7 +30,7 @@ public class AddNewTrip extends JFrame {
     private String DepartureTime;
 
     public AddNewTrip(String username) {
-        super("Add New Trip");
+        super("Add New Flight");
         User user = new User();
         user = user.validateUser(username);
 
@@ -40,7 +43,7 @@ public class AddNewTrip extends JFrame {
 
         Font font = new Font("Chilanka", Font.BOLD, 15);
         Font fields_font = new Font("Chilanka", Font.PLAIN, 13);
-        Color background_color = Color.CYAN;
+        Color background_color = new Color(135, 206, 250);
 
         JLabel heading = new JLabel("New Trip Details");
         heading.setFont(new Font("Chilanka", Font.BOLD, 30));
@@ -171,11 +174,11 @@ public class AddNewTrip extends JFrame {
         save_button.addActionListener(e -> handleSave(username , FlightId,ArrivalTime,DepartureTime));
         buttons_panel.add(save_button);
 
-        JButton search_button = new JButton("Search", new ImageIcon("src//images//search.png"));
-        search_button.setFont(fields_font);
-        search_button.setToolTipText("Click to search trips");
-        search_button.addActionListener(e -> handleSearch());
-        buttons_panel.add(search_button);
+//        JButton search_button = new JButton("Search", new ImageIcon("src//images//search.png"));
+//        search_button.setFont(fields_font);
+//        search_button.setToolTipText("Click to search trips");
+//        search_button.addActionListener(e -> handleSearch());
+//        buttons_panel.add(search_button);
 
         add(buttons_panel);
 
@@ -330,7 +333,7 @@ public class AddNewTrip extends JFrame {
         searchWindow.setSize(400, 300); // Adjust size as needed
         searchWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only the search window
 
-         new SearchTrip();
+        new SearchTrip();
     }
 
     private void clearFields() {
