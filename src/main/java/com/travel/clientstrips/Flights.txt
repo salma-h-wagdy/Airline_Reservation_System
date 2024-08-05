@@ -8,3 +8,4 @@ Nairobi-Addis Ababa-07:00-08:30-007-80
 Berlin-Amsterdam-06:50-08:00-008-200
 Marrakech-Barcelona-12:30-14:10-009-100
 Hong Kong-Singapore-18:00-23:00-010-50
+Cairo-Madrid-18:00-21:00-011-49

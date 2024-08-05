@@ -25,8 +25,8 @@ public class TripList extends JFrame {
         model.addColumn("Source");
         model.addColumn("Destination");
         model.addColumn("Flight Type");
-        model.addColumn("Flight Date");
-        model.addColumn("Duration");
+        model.addColumn("Departure Time");
+        model.addColumn("Arrival Time");
         model.addColumn("One-Way Ticket");
         model.addColumn("Total Cost");
 

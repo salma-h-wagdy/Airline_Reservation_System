@@ -290,7 +290,7 @@ public class AddNewTrip extends JFrame {
 
             if (flight.checkAvailability(tripid, numPassengers)) {
 
-                saveFlightToFile(tripid, (String) source_combobox.getSelectedItem(), (String) destination_combobox.getSelectedItem(), triptype, arrival, departure, tripduration, totalProfit, username);
+                saveFlightToFile(tripid, (String) source_combobox.getSelectedItem(), (String) destination_combobox.getSelectedItem(), triptype,departure , arrival, tripduration, totalProfit, username);
                 flight.updateAvailability(tripid, numPassengers);
 
             }

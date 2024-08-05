@@ -26,7 +26,7 @@ public class ViewUser extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 
-        ImageIcon imageIcon = new ImageIcon("src\\images\\img_2.png");
+        ImageIcon imageIcon = new ImageIcon("src\\images\\img_1.png");
         backgroundImage = imageIcon.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
 
         // Set the custom panel as the content pane
