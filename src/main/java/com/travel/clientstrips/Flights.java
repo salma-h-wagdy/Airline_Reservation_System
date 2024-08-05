@@ -13,6 +13,65 @@ public class Flights {
     String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
     public Flights() {}
 
+    public Flights(int id, String source, String destinantion, String departureTime, String arrivalTime) {
+        this.id = id;
+        Source = source;
+        Destinantion = destinantion;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Flights{" +
+                "id=" + id +
+                ", Source='" + Source + '\'' +
+                ", Destination='" + Destinantion + '\'' +
+                ", departureTime='" + departureTime + '\'' +
+                ", arrivalTime='" + arrivalTime + '\'' +
+                '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getSource() {
+        return Source;
+    }
+
+    public String getDestinantion() {
+        return Destinantion;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public String getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setSource(String source) {
+        Source = source;
+    }
+
+    public void setDestinantion(String destinantion) {
+        Destinantion = destinantion;
+    }
+
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public void setArrivalTime(String arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
     public List<String> Flight_Source() {
 
         List<String> sources = new ArrayList<>();

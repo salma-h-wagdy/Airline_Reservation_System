@@ -13,7 +13,7 @@ import com.travel.clientstrips.CalculateFare;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FlightsTest {
+class BookingTests {
 
     @TempDir
     File tempDir;
