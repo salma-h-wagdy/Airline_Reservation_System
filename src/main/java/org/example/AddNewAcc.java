@@ -4,122 +4,143 @@ import com.travel.clientstrips.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
+import java.io.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class AddNewAcc extends JFrame {
-
     private final JTextField passportField = new JTextField();
     private final JTextField nameField = new JTextField();
-    private final JTextField birthDateField = new JTextField(); // Changed from ageField to birthDateField
+    private final JTextField birthDateField = new JTextField();
     private final JTextField phoneField = new JTextField();
     private final JTextField emailField = new JTextField();
     private final JPasswordField passwordField = new JPasswordField();
+    private Image backgroundImage;
 
     public AddNewAcc() {
         super("Add New Account");
         setSize(950, 720);
         setLocationRelativeTo(null);
         setResizable(false);
-        setLayout(null);
 
-        Font font = new Font("Chilanka", Font.BOLD, 20);
-        Font fieldsFont = new Font("Chilanka", Font.PLAIN, 18);
-        Color backgroundColor = Color.CYAN;
+        // Load the background image
+        ImageIcon imageIcon = new ImageIcon("src\\images\\img_1.png");
+        backgroundImage = imageIcon.getImage().getScaledInstance(950, 720, Image.SCALE_SMOOTH);
 
-        JLabel heading = new JLabel("Add New Account");
-        heading.setFont(new Font("Chilanka", Font.BOLD, 30));
-        heading.setBounds(0, 5, getWidth(), 40);
-        heading.setHorizontalAlignment(JLabel.CENTER);
-        heading.setForeground(Color.blue);
-        add(heading);
+        // Set the custom panel as the content pane
+        setContentPane(new CustomPanel());
 
-        JLabel passportLabel = new JLabel("Passport Number:");
-        passportLabel.setBounds(200, 55, 200, 35);
-        passportLabel.setFont(font);
-        add(passportLabel);
+        setVisible(true);
+    }
 
-        passportField.setBounds(420, 55, 300, 35);
-        passportField.setToolTipText("Enter client passport number");
-        passportField.setFont(fieldsFont);
-        add(passportField);
+    private class CustomPanel extends JPanel {
+        public CustomPanel() {
+            setLayout(null); // Use null layout to manually set component bounds
 
-        JLabel nameLabel = new JLabel("Name:");
-        nameLabel.setFont(font);
-        nameLabel.setBounds(200, 110, 200, 35);
-        add(nameLabel);
+            // Define fonts
+            Font font = new Font("Chilanka", Font.BOLD, 20);
+            Font fieldsFont = new Font("Chilanka", Font.PLAIN, 18);
 
-        nameField.setBounds(420, 110, 300, 35);
-        nameField.setToolTipText("Enter your name");
-        nameField.setFont(fieldsFont);
-        add(nameField);
+            JLabel heading = new JLabel("Add New Account");
+            heading.setFont(new Font("Chilanka", Font.BOLD, 30));
+            heading.setBounds(0, 10, getWidth(), 40);
+            heading.setHorizontalAlignment(JLabel.CENTER);
+            heading.setForeground(Color.blue);
+            add(heading);
 
-        JLabel birthDateLabel = new JLabel("Birth Date (YYYY-MM-DD):"); // Updated label
-        birthDateLabel.setFont(font);
-        birthDateLabel.setBounds(200, 165, 300, 35);
-        add(birthDateLabel);
+            JLabel passportLabel = new JLabel("Passport Number:");
+            passportLabel.setBounds(200, 60, 200, 35);
+            passportLabel.setFont(font);
+            add(passportLabel);
 
-        birthDateField.setBounds(470, 165, 200, 35);
-        birthDateField.setToolTipText("Enter your birth date");
-        birthDateField.setFont(fieldsFont);
-        add(birthDateField);
+            passportField.setBounds(420, 60, 300, 35);
+            passportField.setToolTipText("Enter client passport number");
+            passportField.setFont(fieldsFont);
+            add(passportField);
 
-        JLabel phoneLabel = new JLabel("Phone Number:");
-        phoneLabel.setFont(font);
-        phoneLabel.setBounds(200, 220, 200, 35);
-        add(phoneLabel);
+            JLabel nameLabel = new JLabel("Name:");
+            nameLabel.setFont(font);
+            nameLabel.setBounds(200, 110, 200, 35);
+            add(nameLabel);
 
-        phoneField.setBounds(420, 220, 300, 35);
-        phoneField.setToolTipText("Enter your phone number");
-        phoneField.setFont(fieldsFont);
-        add(phoneField);
+            nameField.setBounds(420, 110, 300, 35);
+            nameField.setToolTipText("Enter your name");
+            nameField.setFont(fieldsFont);
+            add(nameField);
 
-        JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setFont(font);
-        emailLabel.setBounds(200, 275, 200, 35);
-        add(emailLabel);
+            JLabel birthDateLabel = new JLabel("Birth Date (YYYY-MM-DD):");
+            birthDateLabel.setFont(font);
+            birthDateLabel.setBounds(200, 160, 300, 35);
+            add(birthDateLabel);
 
-        emailField.setBounds(420, 275, 300, 35);
-        emailField.setToolTipText("Enter your email");
-        emailField.setFont(fieldsFont);
-        add(emailField);
+            birthDateField.setBounds(470, 160, 200, 35);
+            birthDateField.setToolTipText("Enter your birth date");
+            birthDateField.setFont(fieldsFont);
+            add(birthDateField);
 
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(font);
-        passwordLabel.setBounds(200, 330, 200, 35);
-        add(passwordLabel);
+            JLabel phoneLabel = new JLabel("Phone Number:");
+            phoneLabel.setFont(font);
+            phoneLabel.setBounds(200, 210, 200, 35);
+            add(phoneLabel);
 
-        passwordField.setBounds(420, 330, 300, 35);
-        passwordField.setToolTipText("Enter your password");
-        passwordField.setFont(fieldsFont);
-        add(passwordField);
+            phoneField.setBounds(420, 210, 300, 35);
+            phoneField.setToolTipText("Enter your phone number");
+            phoneField.setFont(fieldsFont);
+            add(phoneField);
 
-        getContentPane().setBackground(backgroundColor);
+            JLabel emailLabel = new JLabel("Email:");
+            emailLabel.setFont(font);
+            emailLabel.setBounds(200, 260, 200, 35);
+            add(emailLabel);
 
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setBounds(0, 385, getWidth(), 50);
-        buttonsPanel.setBackground(backgroundColor);
+            emailField.setBounds(420, 260, 300, 35);
+            emailField.setToolTipText("Enter your email");
+            emailField.setFont(fieldsFont);
+            add(emailField);
 
-        JButton submitButton = new JButton("Submit", new ImageIcon("src//images//all.png"));
-        submitButton.setFont(fieldsFont);
-        submitButton.setToolTipText("Click to register");
-        submitButton.addActionListener(e -> register());
-        buttonsPanel.add(submitButton);
+            JLabel passwordLabel = new JLabel("Password:");
+            passwordLabel.setFont(font);
+            passwordLabel.setBounds(200, 310, 200, 35);
+            add(passwordLabel);
 
-        add(buttonsPanel);
+            passwordField.setBounds(420, 310, 300, 35);
+            passwordField.setToolTipText("Enter your password");
+            passwordField.setFont(fieldsFont);
+            add(passwordField);
+
+            // Create the buttons panel
+            JPanel buttonsPanel = new JPanel();
+            buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 0)); // Center align with spacing between buttons
+            buttonsPanel.setBounds(0, 365, 1000, 100); // Full width, adjust as needed
+            buttonsPanel.setOpaque(false); // Make the panel transparent so the background is visible
+
+            JButton submitButton = new JButton("Submit");
+            submitButton.setFont(fieldsFont);
+            submitButton.setToolTipText("Click to register");
+            submitButton.addActionListener(e -> register());
+            buttonsPanel.add(submitButton);
+
+            JButton cancelButton = new JButton("Cancel");
+            cancelButton.setFont(fieldsFont);
+            cancelButton.setToolTipText("Cancel registration");
+            cancelButton.addActionListener(e -> dispose()); // Close the registration window
+            buttonsPanel.add(cancelButton);
+
+            // Add the buttons panel to the main panel
+            add(buttonsPanel);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            // Draw the background image
+            g.drawImage(backgroundImage, 0, 0, this);
+        }
     }
 
     private void register() {
@@ -145,7 +166,7 @@ public class AddNewAcc extends JFrame {
 
         // Write to the file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            writer.write( user.getName() + "-" + user.getPassword()  + "-" + user.getAge() + "-" + user.getPassportNumber() + "-" + user.getPhoneNumber() + "-" + user.getEmail()+"-"+user.getId());
+            writer.write(user.getName() + "-" + user.getPassword() + "-" + user.getAge() + "-" + user.getPassportNumber() + "-" + user.getPhoneNumber() + "-" + user.getEmail() + "-" + user.getId());
             writer.newLine();
         } catch (IOException e) {
             showMessage("Error writing to file: " + e.getMessage());

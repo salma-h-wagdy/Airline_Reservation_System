@@ -17,7 +17,16 @@ public class ClientsTrips {
 
     public ClientsTrips() {
     }
-
+    public ClientsTrips(String clientname,String tripid,String triptype,String tripdate,String duration,int priceperticket,int No_pass){
+        this.clientname=clientname;
+        this.tripid=tripid;
+        this.triptype=triptype;
+        this.tripdate=tripdate;
+        this.duration=duration;
+        this.priceperticket = priceperticket;
+        this.tripid = tripid;
+        this.No_pass = No_pass;
+    }
 
     public ClientsTrips(User user, String tripid, String triptype, String tripdate, int totalcost, String duration, int price, int No_pass) {
         this.pass = user.getId();

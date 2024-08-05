@@ -1,76 +1,77 @@
 package com.testing;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-import com.travel.UserTrips.UserTrips;
-import org.junit.Before;
-import org.junit.After;
+import com.travel.clientstrips.ClientsTrips;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class UserTripsTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    private UserTrips UserTrips;
 
-    @Before
+public class ClientsTripsTest {
+
+    private ClientsTrips trip;
+
+    @BeforeEach
     public void setUp() {
         System.out.println("Test setup");
-        UserTrips = new UserTrips(123, "Farah Hany", "T123", "Leisure", "2024-08-01", 1000, "7 days", 200, 5);
+         trip = new ClientsTrips("Alia", "T123", "Business", "2024-12-25", "7 days", 500, 2);
     }
 
     @Test
     public void testConstructor() {
-        assertEquals(123, UserTrips.getId());
-        assertEquals("Farah Hany", UserTrips.getUsername());
-        assertEquals("T123", UserTrips.getTripid());
-        assertEquals("Leisure", UserTrips.getTriptype());
-        assertEquals("2024-08-01", UserTrips.getTripdate());
-        assertEquals("7 days", UserTrips.getDuration());
-        assertEquals(200, UserTrips.getPrice());
-        assertEquals(1000, UserTrips.getProfit());
-        assertEquals(5, UserTrips.getNo_pass());
+        assertEquals("Alia", trip.getClientname());
+        assertEquals("T123", trip.getTripid());
+        assertEquals("Business", trip.getTriptype());
+        assertEquals("2024-12-25", trip.getTripdate());
+        assertEquals("7 days", trip.getDuration());
+        assertEquals(500, trip.getPrice());
+        assertEquals(2, trip.getNo_pass());
     }
 
     @Test
     public void testSettersAndGetters() {
 
-        UserTrips.setId(456);
-        UserTrips.setClientname("Rawan Mohamed");
-        UserTrips.setTripid("T456");
-        UserTrips.setTriptype("Business");
-        UserTrips.setTripdate("2024-08-02");
-        UserTrips.setDuration("3 days");
-        UserTrips.setPrice(300);
-        UserTrips.setProfit(900);
-        UserTrips.setNo_pass(3);
+        trip.setId(1);
+        trip.setClientname("Alia");
+        trip.setTripid("T456");
+        trip.setTriptype("Business");
+        trip.setTripdate("2024-11-01");
+        trip.setDuration("5 days");
+        trip.setPrice(600);
+        trip.setProfit(3000);
+        trip.setNo_pass(3);
 
-        assertEquals(456, UserTrips.getId());
-        assertEquals("Rawan Mohamed", UserTrips.getClientname());
-        assertEquals("T456", UserTrips.getTripid());
-        assertEquals("Business", UserTrips.getTriptype());
-        assertEquals("2024-08-02", UserTrips.getTripdate());
-        assertEquals("3 days", UserTrips.getDuration());
-        assertEquals(300, UserTrips.getPrice());
-        assertEquals(900, UserTrips.getProfit());
-        assertEquals(3, UserTrips.getNo_pass());
+        assertEquals(1, trip.getId());
+        assertEquals("Alia", trip.getClientname());
+        assertEquals("T456", trip.getTripid());
+        assertEquals("Business", trip.getTriptype());
+        assertEquals("2024-11-01", trip.getTripdate());
+        assertEquals("5 days", trip.getDuration());
+        assertEquals(600, trip.getPrice());
+        assertEquals(3000, trip.getProfit());
+        assertEquals(3, trip.getNo_pass());
     }
 
 
     @Test
     public void testToString() {
+        ClientsTrips trip = new ClientsTrips("Alia", "T123", "Business", "2024-12-25", "7 days", 500, 2);
         String expected = "Trip{" +
-                "id='123', " +
-                "Category='Farah Hany', " +
-                "Category='Leisure', " +
-                "Trip Date='2024-08-01', " +
-                "Duration='7 days', " +
-                "Price='200', " +
-                "profit='1000', " +
-                "Category='T123', " +
-                "Category='5'}";
-
-        assertEquals(expected, UserTrips.toString());
+                "id='0'," +
+                " Category='Alia'," +
+                " Category='Business'," +
+                " Trip Date='2024-12-25'," +
+                " Duration='7 days'," +
+                " Price='500'," +
+                " profit='0'," +
+                " Category='T123'," +
+                " Category='2'" +
+                '}';
+        assertEquals(expected, trip.toString());
     }
-    @After
+    @AfterEach
     public void tearDown () {
-        UserTrips = null;
+        trip = null;
     }
 }

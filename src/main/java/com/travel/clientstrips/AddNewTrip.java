@@ -1,7 +1,11 @@
 package com.travel.clientstrips;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddNewTrip extends JFrame {
     private final JTextField id_field = new JTextField();
@@ -11,17 +15,23 @@ public class AddNewTrip extends JFrame {
     private final JTextField tripdate_field = new JTextField();
     private final JTextField tripduration_field = new JTextField();
     private final JTextField No_pass_field = new JTextField();
+    private final JComboBox<String> source_combobox = new JComboBox<>();
+    private final JComboBox<String> destination_combobox = new JComboBox<>();
 
-    // Add a JCheckBox for return flight
     private final JCheckBox oneWayTripCheckbox = new JCheckBox("One Way Flight");
 
     private final DefaultTableModel model = new DefaultTableModel();
     private final TripService tripService;
+    private String FlightId;
+    private String ArrivalTime;
+    private String DepartureTime;
 
     public AddNewTrip(String username) {
         super("Add New Trip");
         User user = new User();
-        user=user.validateUser(username);
+        user = user.validateUser(username);
+
+
         System.out.println("Username in add new trip: " + user.getName());
         setSize(950, 700);
         setLocationRelativeTo(null);
@@ -64,44 +74,44 @@ public class AddNewTrip extends JFrame {
         name_field.setEditable(false); // Make field non-editable
         add(name_field);
 
-        JLabel l2 = new JLabel("Flight Id:");
-        l2.setFont(font);
-        l2.setBounds(200, 105, 200, 25);
-        add(l2);
-
-        tripId_field.setBounds(420, 105, 300, 25);
-        tripId_field.setToolTipText("Enter Flight ID");
-        tripId_field.setFont(fields_font);
-        add(tripId_field);
+//        JLabel l2 = new JLabel("Flight ID:");
+//        l2.setFont(font);
+//        l2.setBounds(200, 105, 200, 25);
+//        add(l2);
+//
+//        tripId_field.setBounds(420, 105, 300, 25);
+//        tripId_field.setToolTipText("Enter Flight ID");
+//        tripId_field.setFont(fields_font);
+//        name_field.setText(user.getName());
+//        name_field.setEditable(false);
+//        add(tripId_field);
 
         JLabel l3 = new JLabel("Flight Type:");
         l3.setFont(font);
-        l3.setBounds(200, 135, 200, 25);
+        l3.setBounds(200, 105, 200, 25);
         add(l3);
 
-        // Initialize JComboBox with flight type options
         String[] flightTypes = {"Economy", "Business", "First Class"};
         triptype_combobox = new JComboBox<>(flightTypes);
-        triptype_combobox.setBounds(420, 135, 300, 25);
+        triptype_combobox.setBounds(420, 105, 300, 25);
         triptype_combobox.setFont(fields_font);
         add(triptype_combobox);
 
         JLabel l4 = new JLabel("Flight Date:");
         l4.setFont(font);
-        l4.setBounds(200, 165, 200, 25);
+        l4.setBounds(200, 135, 200, 25);
         add(l4);
 
-        tripdate_field.setBounds(420, 165, 300, 25);
+        tripdate_field.setBounds(420, 135, 300, 25);
         tripdate_field.setToolTipText("Enter Flight Date");
         tripdate_field.setFont(fields_font);
         add(tripdate_field);
 
         oneWayTripCheckbox.setFont(font);
-        oneWayTripCheckbox.setBounds(420, 195, 300, 25);
+        oneWayTripCheckbox.setBounds(420, 165, 300, 25);
         oneWayTripCheckbox.setBackground(background_color);
         add(oneWayTripCheckbox);
 
-        // Add ItemListener to JCheckBox to enable/disable duration field
         oneWayTripCheckbox.addItemListener(e -> {
             if (oneWayTripCheckbox.isSelected()) {
                 tripduration_field.setEnabled(false); // Disable duration field for return flights
@@ -113,32 +123,52 @@ public class AddNewTrip extends JFrame {
 
         JLabel l6 = new JLabel("Duration in days:");
         l6.setFont(font);
-        l6.setBounds(200, 225, 200, 25);
+        l6.setBounds(200, 195, 200, 25);
         add(l6);
 
-        tripduration_field.setBounds(420, 225, 300, 25);
+        tripduration_field.setBounds(420, 195, 300, 25);
         tripduration_field.setToolTipText("Enter number of days");
         tripduration_field.setFont(fields_font);
         add(tripduration_field);
 
         JLabel l5 = new JLabel("Passengers' Number:");
         l5.setFont(font);
-        l5.setBounds(200, 255, 200, 25);
+        l5.setBounds(200, 225, 200, 25);
         add(l5);
 
-        No_pass_field.setBounds(420, 255, 300, 25);
+        No_pass_field.setBounds(420, 225, 300, 25);
         No_pass_field.setToolTipText("Enter number of passengers");
         No_pass_field.setFont(fields_font);
         add(No_pass_field);
 
+        JLabel l8 = new JLabel("Source:");
+        l8.setFont(font);
+        l8.setBounds(200, 255, 200, 25);
+        add(l8);
+
+        source_combobox.setBounds(420, 255, 300, 25);
+        source_combobox.setFont(fields_font);
+        source_combobox.addActionListener(e -> updateDestinations());
+        add(source_combobox);
+
+        JLabel l9 = new JLabel("Destination:");
+        l9.setFont(font);
+        l9.setBounds(200, 285, 200, 25);
+        add(l9);
+
+        destination_combobox.setBounds(420, 285, 300, 25);
+        destination_combobox.setFont(fields_font);
+        destination_combobox.addActionListener(e -> updateFlights());
+        add(destination_combobox);
+
         JPanel buttons_panel = new JPanel();
-        buttons_panel.setBounds(0, 330, getWidth(), 50);
+        buttons_panel.setBounds(0, 350, getWidth(), 50);
         buttons_panel.setBackground(background_color);
 
         JButton save_button = new JButton("Save", new ImageIcon("src//images//save.png"));
         save_button.setFont(fields_font);
         save_button.setToolTipText("Click to save trip details");
-        save_button.addActionListener(e -> handleSave());
+        save_button.addActionListener(e -> handleSave(username , FlightId,ArrivalTime,DepartureTime));
         buttons_panel.add(save_button);
 
         JButton search_button = new JButton("Search", new ImageIcon("src//images//search.png"));
@@ -149,64 +179,217 @@ public class AddNewTrip extends JFrame {
 
         add(buttons_panel);
 
+        model.addColumn("Flight ID");
+        model.addColumn("Source");
+        model.addColumn("Destination");
+        model.addColumn("Departure Time");
+        model.addColumn("Arrival Time");
+
         JTable tabGrid = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(tabGrid);
-        scrollPane.setBounds(0, 380, getWidth(), getHeight() - 420);
+        scrollPane.setBounds(0, 400, getWidth(), getHeight() - 450);
         add(scrollPane);
         tabGrid.setFont(new Font("Chilanka", Font.PLAIN, 16));
 
-        model.addColumn("Passport Number");
-        model.addColumn("Name");
-        model.addColumn("Flight ID");
-        model.addColumn("Flight Type");
-        model.addColumn("Flight Date");
-        model.addColumn("Trip Duration in days");
-        model.addColumn("Total Cost $");
-        model.addColumn("Number Of Passengers");
-
         getContentPane().setBackground(background_color);
         tripService = new TripService();
+        loadSources();
         setVisible(true);
     }
 
-    private void handleSave() {
+    private void loadSources() {
+        Flights flight= new Flights();
+        List<String> sources = flight.Flight_Source();
+        for (String source : sources) {
+            source_combobox.addItem(source);
+        }
+    }
+
+
+
+    private void updateDestinations() {
+        destination_combobox.removeAllItems();
+        String selectedSource = (String) source_combobox.getSelectedItem();
+        if (selectedSource != null) {
+            List<String> destinations = readDestinationsFromFile(selectedSource);
+            for (String destination : destinations) {
+                destination_combobox.addItem(destination);
+            }
+        }
+    }
+
+    private List<String> readDestinationsFromFile(String source) {
+        String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
+        List<String> destinations = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("-");
+                if (parts.length >= 5) {
+                    String fileSource = parts[0];
+                    String destination = parts[1];
+                    if (fileSource.equals(source) && !destinations.contains(destination)) {
+                        destinations.add(destination);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return destinations;
+    }
+
+    private void updateFlights() {
+        model.setRowCount(0); // Clear existing rows
+        String selectedSource = (String) source_combobox.getSelectedItem();
+        String selectedDestination = (String) destination_combobox.getSelectedItem();
+        if (selectedSource != null && selectedDestination != null) {
+            List<String[]> flights = readFlightsFromFile(selectedSource, selectedDestination);
+            for (String[] flight : flights) {
+                model.addRow(flight);
+            }
+        }
+    }
+
+    private List<String[]> readFlightsFromFile(String source, String destination) {
+        String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
+        List<String[]> flights = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("-");
+                if (parts.length >= 6) {
+                    String fileSource = parts[0];
+                    String fileDestination = parts[1];
+                    if (fileSource.equals(source) && fileDestination.equals(destination)) {
+                        flights.add(parts);
+                        setStuff(parts[4], parts[3], parts[2], Integer.parseInt(parts[5]));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return flights;
+    }
+
+    private void setStuff(String id, String departure, String arrival, int availability) {
+        FlightId = id;
+        ArrivalTime = arrival;
+        DepartureTime = departure;
+
+    }
+
+
+
+
+    private void handleSave(String username, String tripId, String departure, String arrival) {
         // Get data from input fields
-        String id_str = id_field.getText();
-        String name = name_field.getText();
-        String tripid = tripId_field.getText();
+        String tripid = tripId;
         String triptype = (String) triptype_combobox.getSelectedItem();
         String tripdate = tripdate_field.getText();
         String tripduration = tripduration_field.getText();
         String No_passStr = No_pass_field.getText();
 
         // Parse necessary data
-        int id = Integer.parseInt(id_str);
         int numPassengers = Integer.parseInt(No_passStr);
         int totalProfit = calculateFare(numPassengers, triptype);
 
-        // Create a User object
-        User user = new User(id, name, 0, "", "", "", ""); // Adjust User constructor as needed
+        // Check availability
+        if (checkAvailability(tripid, numPassengers)) {
+            // Determine if it's a one-way flight
+            if (oneWayTripCheckbox.isSelected()) {
+                tripduration = "0"; // For one-way flight, set duration to 0
+            }
 
-        // Determine if it's a one-way flight
-        if (oneWayTripCheckbox.isSelected()) {
-            tripduration = "0"; // For one way flight, set duration to 0
+            if (checkAvailability(tripid, numPassengers)) {
+
+                saveFlightToFile(tripid, (String) source_combobox.getSelectedItem(), (String) destination_combobox.getSelectedItem(), triptype, arrival, departure, tripduration, totalProfit, username);
+                updateAvailability(tripid, numPassengers);
+
+            }
+            // Add to table
+            model.addRow(new Object[]{tripid, source_combobox.getSelectedItem(), destination_combobox.getSelectedItem(), arrival, departure, tripdate, tripduration});
+            clearFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Not enough available seats for this flight.");
         }
-
-        // Create a ClientsTrips object using the User
-        ClientsTrips trip = new ClientsTrips(user, tripid, triptype, tripdate, totalProfit, tripduration, totalProfit, numPassengers);
-
-        // Save the trip and update the table
-        tripService.addNewTrip(id_str, name, tripid, triptype, tripdate, tripduration, totalProfit, numPassengers);
-        model.addRow(new Object[]{id_str, name, tripid, triptype, tripdate, tripduration, totalProfit, numPassengers});
-        clearFields();
     }
+    private boolean checkAvailability(String tripId, int numPassengers) {
+        String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("-");
+                if (parts.length >= 6) {
+                    String fileId = parts[4];
+                    int availableSeats = Integer.parseInt(parts[5]);
+                    if (fileId.equals(tripId) && availableSeats >= numPassengers) {
+                        return true;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void updateAvailability(String tripId, int numPassengers) {
+        String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
+        File tempFile = new File(filePath + ".tmp");
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
+             PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("-");
+                if (parts.length >= 6) {
+                    String fileId = parts[4];
+                    int availableSeats = Integer.parseInt(parts[5]);
+                    if (fileId.equals(tripId)) {
+                        availableSeats -= numPassengers;
+                        writer.println(String.join("-", parts[0], parts[1], parts[2], parts[3], fileId, String.valueOf(availableSeats)));
+                    } else {
+                        writer.println(line);
+                    }
+                }
+            }
+            tempFile.renameTo(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveFlightToFile(String tripid, String source, String destination, String flightType, String departureTime, String arrivalTime, String duration, int totalProfit, String username) {
+        String filePath = "src/main/java/com/travel/clientstrips/Trips.csv";
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
+            writer.println(String.format("%s,%s,%s,%s,%s,%s ,%s,%d,%s",
+                    tripid,
+                    source,
+                    destination,
+                    flightType,
+                    departureTime,
+                    arrivalTime,
+                    duration,
+                    totalProfit,
+                    username
+            ));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     private void handleSearch() {
         JFrame searchWindow = new JFrame("Search Trip");
         searchWindow.setSize(400, 300); // Adjust size as needed
         searchWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only the search window
 
-       // new SearchTrip();
+         new SearchTrip();
     }
 
     private void clearFields() {
@@ -217,6 +400,9 @@ public class AddNewTrip extends JFrame {
         No_pass_field.setText("");
         triptype_combobox.setSelectedIndex(0); // Reset to default option
         oneWayTripCheckbox.setSelected(false); // Reset the checkbox
+        source_combobox.setSelectedIndex(-1);
+        destination_combobox.setSelectedIndex(-1);
+        model.setRowCount(0); // Clear table rows
     }
 
     private int calculateFare(int numPassengers, String flightType) {
@@ -245,6 +431,7 @@ public class AddNewTrip extends JFrame {
     }
 
     public static void main(String[] args) {
-
+        // Launch the application
+        SwingUtilities.invokeLater(() -> new AddNewTrip("testUser"));
     }
 }
