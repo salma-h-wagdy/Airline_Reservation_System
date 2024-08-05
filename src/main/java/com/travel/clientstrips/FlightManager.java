@@ -12,7 +12,6 @@ public class FlightManager {
         if (admin.validateAdmin(username)) {
             AddFlight addFlightForm = new AddFlight();
 
-            // Wait for the form to close and then check if a flight was added
             addFlightForm.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosed(java.awt.event.WindowEvent windowEvent) {

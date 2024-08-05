@@ -145,35 +145,42 @@ public class AddNewAcc extends JFrame {
 
     private void register() {
         // Retrieve the input values
-        String passportNumber = passportField.getText();
-        String name = nameField.getText();
-        String birthDateStr = birthDateField.getText(); // Birth date input as a string
-        String phoneNumber = phoneField.getText();
-        String email = emailField.getText();
-        String password = new String(passwordField.getPassword()); // Get the password
+        String passportNumber = passportField.getText().trim();
+        String name = nameField.getText().trim();
+        String birthDateStr = birthDateField.getText().trim();
+        String phoneNumber = phoneField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
 
-        // Calculate age from birth date
+        // Validate input fields
+        if (passportNumber.isEmpty() || name.isEmpty() || birthDateStr.isEmpty() ||
+                phoneNumber.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            showMessage("Please fill in all fields.");
+            return;
+        }
+
         int age = calculateAgeFromBirthDate(birthDateStr);
+        if (age <= 0) {
+            showMessage("Please enter a valid birth date.");
+            return;
+        }
 
-        // Generate a unique ID
         int id = generateUniqueId();
-
-        // Create a User object
         User user = new User(id, name, age, passportNumber, phoneNumber, email, password);
 
-        // Define the file path
         String filePath = "src/main/java/com/travel/clientstrips/Users.txt";
 
-        // Write to the file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            writer.write(user.getName() + "-" + user.getPassword() + "-" + user.getAge() + "-" + user.getPassportNumber() + "-" + user.getPhoneNumber() + "-" + user.getEmail() + "-" + user.getId());
+            writer.write(user.getName() + "-" + user.getPassword() + "-" + user.getAge() + "-" +
+                    user.getPassportNumber() + "-" + user.getPhoneNumber() + "-" + user.getEmail() +
+                    "-" + user.getId());
             writer.newLine();
+            JOptionPane.showMessageDialog(this, "You are registered successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             showMessage("Error writing to file: " + e.getMessage());
         }
-
-        JOptionPane.showMessageDialog(null, "You are registered successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
+
 
     private int calculateAgeFromBirthDate(String birthDateStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Define the format
