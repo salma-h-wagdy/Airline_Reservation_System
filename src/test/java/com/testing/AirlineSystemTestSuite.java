@@ -8,8 +8,8 @@ import org.junit.platform.suite.api.Suite;
 @SelectClasses({
         BookingTests.class,
         AdminTest.class,
-        ClientsTripsTest.class, // Replace with actual class name
-        FlightsTest.class   // Replace with actual class name
+        ClientsTripsTest.class,
+        FlightsTest.class
 })
 public class AirlineSystemTestSuite {
 }

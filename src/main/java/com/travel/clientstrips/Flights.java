@@ -73,11 +73,11 @@ public class Flights {
         this.arrivalTime = arrivalTime;
     }
 
-    public List<String> Flight_Source() {
+    public List<String> Flight_Source(String path) {
 
         List<String> sources = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("-");
@@ -112,9 +112,9 @@ public class Flights {
         }
         return destinations;
     }
-    public boolean checkAvailability(String tripId, int numPassengers) {
+    public boolean checkAvailability(String tripId, int numPassengers , String path) {
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("-");
@@ -132,11 +132,11 @@ public class Flights {
         return false;
     }
 
-    public void updateAvailability(String tripId, int numPassengers) {
+    public void updateAvailability(String tripId, int numPassengers ,String path ) {
         List<String> lines = new ArrayList<>();
         boolean tripFound = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("-");
@@ -166,7 +166,7 @@ public class Flights {
             System.err.println("Trip ID not found: " + tripId);
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             for (String updatedLine : lines) {
                 writer.write(updatedLine);
                 writer.newLine();

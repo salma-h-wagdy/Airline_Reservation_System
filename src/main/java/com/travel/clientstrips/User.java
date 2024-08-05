@@ -13,6 +13,7 @@ public class User {
     private String phoneNumber;
     private String email;
     private String password;
+    String filePath = "src/main/java/com/travel/clientstrips/Users.txt";
 
     public User() {
     }
@@ -115,9 +116,9 @@ public class User {
                 ", password='" + password + '\'' +
                 '}';
     }
-    public User validateUser(String username) {
-        String filePath = "src/main/java/com/travel/clientstrips/Users.txt";
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+    public User validateUser(String username , String path) {
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("-");

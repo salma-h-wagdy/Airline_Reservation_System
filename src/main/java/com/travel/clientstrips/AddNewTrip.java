@@ -32,7 +32,8 @@ public class AddNewTrip extends JFrame {
     public AddNewTrip(String username) {
         super("Add New Flight");
         User user = new User();
-        user = user.validateUser(username);
+
+        user = user.validateUser(username ,user.filePath );
 
 
         System.out.println("Username in add new trip: " + user.getName());
@@ -202,7 +203,7 @@ public class AddNewTrip extends JFrame {
 
     private void loadSources() {
         Flights flight= new Flights();
-        List<String> sources = flight.Flight_Source();
+        List<String> sources = flight.Flight_Source(flight.filePath);
         for (String source : sources) {
             source_combobox.addItem(source);
         }
@@ -282,19 +283,20 @@ public class AddNewTrip extends JFrame {
         CalculateFare calculateFare = new CalculateFare();
         int totalProfit = calculateFare.calculateFare(numPassengers, triptype);
 
+        String filePath = "src/main/java/com/travel/clientstrips/Flights.txt";
 
         Flights flight= new Flights();
         // Check availability
-        if (flight.checkAvailability(tripid, numPassengers)) {
+        if (flight.checkAvailability(tripid, numPassengers,filePath)) {
             // Determine if it's a one-way flight
             if (oneWayTripCheckbox.isSelected()) {
                 tripduration = "0"; // For one-way flight, set duration to 0
             }
 
-            if (flight.checkAvailability(tripid, numPassengers)) {
+            if (flight.checkAvailability(tripid, numPassengers,filePath)) {
 
                 saveFlightToFile(tripid, (String) source_combobox.getSelectedItem(), (String) destination_combobox.getSelectedItem(), triptype,departure , arrival, tripduration, totalProfit, username);
-                flight.updateAvailability(tripid, numPassengers);
+                flight.updateAvailability(tripid, numPassengers,filePath);
 
             }
             // Add to table
