@@ -12,7 +12,7 @@ public class User {
     private String passportNumber;
     private String phoneNumber;
     private String email;
-    private String password; // Added password field
+    private String password;
 
     public User() {
     }

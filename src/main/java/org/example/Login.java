@@ -117,10 +117,15 @@ public class Login extends JFrame {
 		String username = username_field.getText();
 		String password = String.valueOf(password_field.getPassword());
 
-		if (validateUser(username, password)) {
+		if (validateUser(username, password)&& !username.equals("admin")) {
 			setVisible(false);
 			new MainMenu(username);
-		} else {
+		}
+		else if(username.equals("admin")) {
+			setVisible(false);
+			new AdminMenu(username);
+		}
+				else {
 			checkCounter();
 		}
 	}

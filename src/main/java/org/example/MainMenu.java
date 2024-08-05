@@ -2,6 +2,8 @@ package org.example;
 
 import com.travel.clientstrips.AddNewTrip;
 import com.travel.clientstrips.TripList;
+import com.travel.clientstrips.ViewUser;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -59,30 +61,37 @@ public class MainMenu extends JFrame {
 			// Create buttons
 			JButton btnAddNewClientTrip = new JButton("Add New Trip", new ImageIcon("src//images//add.png"));
 			JButton btnViewBookedTrips = new JButton("View Booked Trips", new ImageIcon("src//images//view.png"));
+			JButton btnViewUserInfo = new JButton("View User Info", new ImageIcon("src//images//user.png")); // New Button
 
 			// Set font and preferred size for larger buttons
 			btnAddNewClientTrip.setFont(buttons_font);
 			btnViewBookedTrips.setFont(buttons_font);
+			btnViewUserInfo.setFont(buttons_font); // Set font for new button
 
 			// Set button size (width, height)
 			Dimension buttonSize = new Dimension(300, 80);
 			btnAddNewClientTrip.setPreferredSize(buttonSize);
 			btnViewBookedTrips.setPreferredSize(buttonSize);
+			btnViewUserInfo.setPreferredSize(buttonSize); // Set size for new button
 
 			// Center buttons horizontally
 			btnAddNewClientTrip.setAlignmentX(Component.CENTER_ALIGNMENT);
 			btnViewBookedTrips.setAlignmentX(Component.CENTER_ALIGNMENT);
+			btnViewUserInfo.setAlignmentX(Component.CENTER_ALIGNMENT); // Center align new button
 
 			// Add space between buttons
 			buttons_panel.add(Box.createVerticalStrut(20)); // Add some vertical spacing before buttons
 			buttons_panel.add(btnAddNewClientTrip);
 			buttons_panel.add(Box.createVerticalStrut(20)); // Space between buttons
 			buttons_panel.add(btnViewBookedTrips);
+			buttons_panel.add(Box.createVerticalStrut(20)); // Space between buttons
+			buttons_panel.add(btnViewUserInfo); // Add new button
 			buttons_panel.add(Box.createVerticalStrut(20)); // Add some vertical spacing after buttons
 
 			// Add action listeners
 			btnAddNewClientTrip.addActionListener(e -> new AddNewTrip(username));
 			btnViewBookedTrips.addActionListener(e -> new TripList(username));
+			btnViewUserInfo.addActionListener(e -> showUserInfo(username)); // Add action listener for new button
 
 			m4_1.addActionListener(e -> new About());
 			m5_1.addActionListener(e -> System.exit(0));
@@ -102,6 +111,10 @@ public class MainMenu extends JFrame {
 			super.paintComponent(g);
 			// Draw the background image
 			g.drawImage(backgroundImage, 0, 0, this);
+		}
+
+		private void showUserInfo(String username) {
+			new ViewUser(username); // Open new window with user info
 		}
 	}
 
