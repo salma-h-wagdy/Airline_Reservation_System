@@ -12,7 +12,8 @@ public class ViewUser extends JFrame {
         super("User Information");
 
         // Fetch user information based on the username
-        user = new User().validateUser(username,user.filePath);
+        user = new User();
+        user=user.validateUser(username,user.filePath);
 
         // Check if the user is null
         if (user == null) {

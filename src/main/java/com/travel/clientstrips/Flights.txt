@@ -1,8 +1,8 @@
-Cairo-London-08:00-12:00-001-100
+Cairo-London-08:00-12:00-001-98
 New York-Tokyo-15:30-05:45-002-50
 Cape Town-Dubai-17:20-02:15-003-0
 Paris-Rome-09:10-10:30-004-30
-Lagos-Accra-13:45-14:15-005-20
+Lagos-Accra-13:45-14:15-005-19
 Sydney-Los Angeles-22:00-16:00-006-40
 Nairobi-Addis Ababa-07:00-08:30-007-80
 Berlin-Amsterdam-06:50-08:00-008-200
