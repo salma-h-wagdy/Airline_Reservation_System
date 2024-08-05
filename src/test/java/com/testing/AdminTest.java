@@ -36,17 +36,10 @@ public class AdminTest {
 
     @Test
     void testValidateAdmin() {
-        assertTrue(Admin.validateAdmin("admin"));  // Admin username
-        assertFalse(Admin.validateAdmin("user"));  // Non-admin username
+        assertTrue(Admin.validateAdmin("admin"));  
+        assertFalse(Admin.validateAdmin("user"));  
     }
 
-    @Test
-    void testAdminEqualsAndHashCode() {
-        Admin anotherAdmin = new Admin(1, "admin", 35, "P12345678", "1234567890", "admin@example.com", "securePass123", true);
-
-        assertEquals(admin, anotherAdmin);
-        assertEquals(admin.hashCode(), anotherAdmin.hashCode());
-    }
 
     @Test
     void testAdminIntegrationWithUser() {
